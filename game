@@ -1,0 +1,72 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+
+using namespace std;
+
+// Function to get computer's selection
+string computerSelection() {
+    string choices[] = {"rock", "paper", "scissor"};
+    return choices[rand() % 3];  // Randomly choose one of the options
+}
+
+// Function to determine the winner
+string determineWinner(string userChoice, string computerChoice) {
+    if (userChoice == computerChoice) {
+        return "It's a tie!";
+    } else if ((userChoice == "rock" && computerChoice == "scissor") ||
+               (userChoice == "paper" && computerChoice == "rock") ||
+               (userChoice == "scissor" && computerChoice == "paper")) {
+        return "You Win!";
+    } else {
+        return "You Lose!";
+    }
+}
+
+void playGame(string userChoice, int &userScore, int &computerScore) {
+    string computerChoice = computerSelection();
+    string result = determineWinner(userChoice, computerChoice);
+
+    cout << "Computer chose: " << computerChoice << endl;
+    cout << result << endl;
+
+    if (result == "You Win!") {
+        userScore++;
+    } else if (result == "You Lose!") {
+        computerScore++;
+    }
+
+    cout << "Score: You " << userScore << " - Computer " << computerScore << endl;
+}
+
+void resetGame(int &userScore, int &computerScore) {
+    userScore = 0;
+    computerScore = 0;
+    cout << "Game reset." << endl;
+    cout << "Score: You 0 - Computer 0" << endl;
+}
+
+int main() {
+    srand(time(0));  // Seed for random number generation
+    int userScore = 0;
+    int computerScore = 0;
+
+    while (true) {
+        string userChoice;
+        cout << "Choose rock, paper, or scissor (or type 'reset' to reset the game, 'exit' to quit): ";
+        cin >> userChoice;
+
+        if (userChoice == "exit") {
+            break;
+        } else if (userChoice == "reset") {
+            resetGame(userScore, computerScore);
+        } else if (userChoice == "rock" || userChoice == "paper" || userChoice == "scissor") {
+            playGame(userChoice, userScore, computerScore);
+        } else {
+            cout << "Invalid choice. Please choose rock, paper, or scissor." << endl;
+        }
+    }
+
+    return 0;
+}
